@@ -24,6 +24,7 @@ HTTPS_ENVIRON = {'wsgi.url_scheme': 'https'}
 ######################################################################
 #  T E S T   C A S E S
 ######################################################################
+
 class TestAccountService(TestCase):
     """Account Service Tests"""
 
@@ -125,9 +126,6 @@ class TestAccountService(TestCase):
         )
         self.assertEqual(response.status_code, status.HTTP_415_UNSUPPORTED_MEDIA_TYPE)
 
-    # ADD YOUR TEST CASES HERE ...
-
-
     #########################################
     # - ISSUE #2 - READ ACCOUNT             #
     #########################################
@@ -150,11 +148,13 @@ class TestAccountService(TestCase):
     #########################################
     # - ISSUE #4 - DELETE ACCOUNT           #
     #########################################
+
     def test_delete_account(self):
         """It should Delete an Account"""
         account = self._create_accounts(1)[0]
         resp = self.client.delete(f"{BASE_URL}/{account.id}")
         self.assertEqual(resp.status_code, status.HTTP_204_NO_CONTENT)
+
     #########################################
     # - ISSUE #5 - LIST ACCOUNTS            #
     #########################################
@@ -167,13 +167,13 @@ class TestAccountService(TestCase):
         data = resp.get_json()
         self.assertEqual(len(data), 5)
 
-
-
     ############################################
     # - ISSUE #3 - UPDATE ACCOUNT              #
     ############################################
+
     def test_update_account(self):
         """It should Update an existing Account"""
+
         # create an Account to update
         test_account = AccountFactory()
         resp = self.client.post(BASE_URL, json=test_account.serialize())
@@ -187,10 +187,10 @@ class TestAccountService(TestCase):
         updated_account = resp.get_json()
         self.assertEqual(updated_account["name"], "Something Known")
 
-
     ###########################################
     # - issue #12 - SECURITY HEADERS          #
     ###########################################
+    
     def test_security_headers(self):
         """It should return security headers"""
         response = self.client.get('/', environ_overrides=HTTPS_ENVIRON)
@@ -203,7 +203,6 @@ class TestAccountService(TestCase):
         }
         for key, value in headers.items():
             self.assertEqual(response.headers.get(key), value)
-
 
     def test_cors_security(self):
         """It should return a CORS header"""
